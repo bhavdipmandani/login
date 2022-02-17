@@ -10,10 +10,8 @@ import { Router } from '@angular/router';
 })
 
 export class SigninComponent implements OnInit {
-  // signinForm: FormGroup;
-  signinForm: any;
-  error: any;
-  public loginData: any;
+  signinForm: FormGroup;
+  private error: any;
 
   constructor(
     public fb: FormBuilder,
@@ -21,8 +19,8 @@ export class SigninComponent implements OnInit {
     public router: Router
   ) {
     this.signinForm = this.fb.group({
-      email: ['' , [Validators.required]],
-      password: ['', [Validators.required]]
+      email: [''],
+      password: ['']
     });
   }
 
@@ -30,21 +28,14 @@ export class SigninComponent implements OnInit {
 
   login() {
     const userId = localStorage.getItem('id');
-    return this.authService.signIn(this.signinForm.value);
-
+    if (this.signinForm.valid) {
+      this.authService.signIn(this.signinForm.value);
+      if (userId) {
+        this.router.navigate(['user-profile']);
+      } else {
+         // window.alert('Enter valid value');
+        // this.error = result.message;
+      }
+    }
   }
-
-  // login() {
-  //   console.log(this.signinForm.value);
-  //   if (this.signinForm.valid) {
-  //     this.loginData.signIn(this.signinForm.value).subscribe((result: any) => {
-  //       console.log(result);
-  //       if (result.auth) {
-  //         this.router.navigate(['user-profile']);
-  //       } else {
-  //         this.error = result.message;
-  //       }
-  //     });
-  //   }
-  // }
 }

@@ -1,17 +1,37 @@
-<div class="container">
-    <div class="row">
+<div class="container-fluid">
         <div class="inner-main">
-            <h2 class="mb-4">User Profile</h2>
-            <p><strong>Name : </strong> {{ name }}</p>
+            <h2 class="mb-4">Add Product</h2>
+<!--            <p><strong>Name : </strong> {{ name }}</p>-->
+          <form [formGroup]="productForm" (ngSubmit)="insertProduct()">
+            <div class="mb-3">
+              <label for="exampleInputProductName" class="form-label">Product Name</label>
+              <input type="text" class="form-control" id="exampleInputProductName" formControlName="product" aria-describedby="productHelp">
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPrice" class="form-label">Price</label>
+              <input type="text" class="form-control" id="exampleInputPrice" formControlName="price">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+
+          <h2 class="mb-4 mt-4">Product List</h2>
+          <table class="table">
+            <thead>
+            <tr>
+              <th scope="col">Product Name</th>
+              <th scope="col">Product Price</th>
+              <th scope="col">Update Product</th>
+              <th scope="col">Delete Product</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor = "let item of products">
+              <td>{{item.product}}</td>
+              <td>{{item.price}}</td>
+              <td><a [routerLink]="['/update', item._id]" class="btn btn-success">Update</a></td>
+              <td><button class="btn btn-danger" (click)="deleteProduct(item)"> Delete</button></td>
+            </tr>
+            </tbody>
+          </table>
         </div>
-    </div>
 </div>
-
-
-<!--<div class="container">-->
-<!--  <div class="row">-->
-<!--    <div class="inner-main">-->
-<!--      <h2 class="mb-4">User Profile</h2>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->

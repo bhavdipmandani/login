@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { SigninComponent } from './components/signin/signin.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import {UpdateProductComponent} from './components/user-profile/updateProduct.component'
 
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -16,7 +17,8 @@ import { AuthInterceptor } from './shared/authconfig.interceptor';
     AppComponent,
     SigninComponent,
     SignupComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    UpdateProductComponent
   ],
   imports: [
     BrowserModule,

@@ -1,10 +1,12 @@
+/* tslint:disable:no-trailing-whitespace */
 import { Injectable } from '@angular/core';
 import { User } from './user';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import {baseUrl} from '../../environments/environment';
+import {Product} from './product';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +20,7 @@ export class AuthService {
     public router: Router
   ) {
   }
+  products: Product[];
 
   signUp(user: User): Observable<any> {
     const api = `${baseUrl}/auth/register`;
@@ -50,21 +53,45 @@ export class AuthService {
 
   doLogout() {
     const removeToken = localStorage.removeItem('authToken');
+    localStorage.removeItem('name');
+    localStorage.removeItem('id');
     if (removeToken == null) {
       this.router.navigate(['log-in']);
     }
   }
 
-  // getUserProfile(authId): Observable<any> {
-  //   const userId = localStorage.getItem('id');
-  //   const api = `${baseUrl}/auth/list/${userId}`;
-  //   return this.http.get(api, { headers: this.headers }).pipe(
-  //     map((res: Response) => {
-  //       return res || {};
-  //     }),
-  //     catchError(this.handleError)
-  //   );
-  // }
+
+
+  // ------------------------------ product data crud operations ------------------------------
+
+
+
+
+  public getProducts() {
+    return this.http.get<Product[]>(`${baseUrl}/store`);
+  }
+
+  addProduct(product: Product): Observable<any> {
+    const api = `${baseUrl}/store`;
+    return this.http.post(api, product)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  public deleteProduct(product) {
+    return this.http.delete(`${baseUrl}/store/${product._id}`);
+  }
+
+  public getProductData(id) {
+    return this.http.get(`${baseUrl}/store/${id}`);
+  }
+
+  public updateProduct(product) {
+    // console.log(product.product.products._id);
+    return this.http.patch<Product>(`${baseUrl}/store/${product.product.products._id}`, product.product.products);
+  }
+
 
   handleError(error: HttpErrorResponse) {
     let msg = '';
